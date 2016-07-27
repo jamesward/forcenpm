@@ -1,0 +1,24 @@
+@()(implicit staticWebJarAssets: StaticWebJarAssets)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="@staticWebJarAssets.urlFullPath("salesforce-lightning-design-system", "assets/styles/salesforce-lightning-design-system.min.css")"/>
+        <title>Force NPM</title>
+    </head>
+    <body>
+        <div class="slds-text-heading--large slds-text-align--center" style="margin-top: 15px;">Force NPM</div>
+        <div class="slds-container--center slds-container--small" style="margin-top: 40px;">
+            <div class="slds-card">
+                <div class="slds-card__header">
+                    <div class="slds-text-heading--small slds-text-align--center">Login to Salesforce</div>
+                </div>
+                <div class="slds-card__body slds-text-align--center" style="padding-bottom: 15px;">
+                    <a href="@routes.Application.oauthLoginProd()" class="slds-button slds-button--brand">Normal Instance</a>
+                    <a href="@routes.Application.oauthLoginSandbox()" class="slds-button slds-button--brand">Sandbox Instance</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

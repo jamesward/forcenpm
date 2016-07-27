@@ -1,0 +1,86 @@
+@(authInfo: utils.AuthInfo)(implicit staticWebJarAssets: StaticWebJarAssets)
+
+@webJarUrl(name: String) = @{ staticWebJarAssets.urlFullPath(name, "").dropRight(1) }
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Force NPM</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="@staticWebJarAssets.urlFullPath("salesforce-lightning-design-system", "assets/styles/salesforce-lightning-design-system.min.css")"/>
+
+        <script src="@staticWebJarAssets.urlFullPath("core-js", "client/shim.min.js")"></script>
+        <script src="@staticWebJarAssets.urlFullPath("zone.js", "dist/zone.js")"></script>
+        <script src="@staticWebJarAssets.urlFullPath("reflect-metadata", "Reflect.js")"></script>
+        <script src="@staticWebJarAssets.urlFullPath("systemjs", "dist/system.src.js")"></script>
+
+        <script>
+            var idUrl = '@authInfo.idUrl';
+            var accessToken = '@authInfo.accessToken';
+            var refreshToken = '@authInfo.refreshToken';
+            var instanceUrl = '@authInfo.instanceUrl';
+            var logoutUrl = '@routes.Application.login()';
+            var sldsUrl = '@webJarUrl("salesforce-lightning-design-system")';
+
+            (function(global) {
+                var map = {
+                    'app':                                                '@routes.Assets.versioned("app").url',
+                    'symbol-observable':                                  '@webJarUrl("symbol-observable")',
+                    'rxjs':                                               '@webJarUrl("rxjs")',
+                    'auto-complete':                                      '@webJarUrl("ng2-auto-complete")',
+                    '@@angular/core':                                     '@webJarUrl("angular__core")',
+                    '@@angular/common':                                   '@webJarUrl("angular__common")',
+                    '@@angular/compiler':                                 '@webJarUrl("angular__compiler")',
+                    '@@angular/http':                                     '@webJarUrl("angular__http")',
+                    '@@angular/platform-browser':                         '@webJarUrl("angular__platform-browser")',
+                    '@@angular/platform-browser-dynamic':                 '@webJarUrl("angular__platform-browser-dynamic")'
+                };
+
+                var packages = {
+                    'app':                                                { main: 'main.js', defaultExtension: 'js' },
+                    'symbol-observable':                                  { main: 'index.js', defaultExtension: 'js' },
+                    'rxjs':                                               { defaultExtension: 'js' },
+                    'auto-complete':                                      { main: 'dist/index.js', defaultExtension: 'js' }
+                };
+
+                var ngPackageNames = [
+                    'core',
+                    'common',
+                    'compiler',
+                    'http',
+                    'platform-browser',
+                    'platform-browser-dynamic'
+                ];
+
+                // Individual files (~300 requests):
+                function packIndex(pkgName) {
+                    packages['@@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+                }
+
+                // Bundled (~40 requests):
+                function packUmd(pkgName) {
+                    packages['@@angular/'+pkgName] = { main: 'bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+                }
+
+                // Most environments should use UMD; some (Karma) need the individual index files
+                var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+
+                // Add package entries for angular packages
+                ngPackageNames.forEach(setPackageConfig);
+
+                var config = {
+                    map: map,
+                    packages: packages
+                };
+
+                System.config(config);
+            })(this);
+
+            System.import('app').catch(function(err){ console.error(err); });
+        </script>
+    </head>
+    <body>
+        <my-app></my-app>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                              controllers.Application.index
+GET         /login                         controllers.Application.login
+
+# JS API
+GET         /force/userinfo                controllers.Application.forceUserInfo
+GET         /force/npm                     controllers.Application.forceNpmList
+POST        /force/npm                     controllers.Application.forceNpmCreate(name, version)
+GET         /npm/search                    controllers.Application.npmPackageSearch(keyword)
+GET         /npm/versions                  controllers.Application.npmPackageVersions(name)
+
+# OAuth
+GET         /_login_prod                   controllers.Application.oauthLoginProd()
+GET         /_login_sandbox                controllers.Application.oauthLoginSandbox()
+GET         /_oauth_callback               controllers.Application.oauthCallback(code: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /vassets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
+
+# WebJars
+GET         /webjars/*file                 controllers.WebJarAssets.at(file)

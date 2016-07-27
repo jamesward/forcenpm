@@ -1,0 +1,63 @@
+<div class="slds-page-header" role="banner">
+    <div class="slds-grid">
+        <div class="slds-col slds-has-flexi-truncate">
+            <div class="slds-media slds-media--center slds-no-space slds-grow">
+                <div class="slds-media__body">
+                    <p class="slds-text-heading--label">{{userOrgInfo.Name}} - {{userOrgInfo.OrganizationType}}</p>
+                    <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Record Title">{{userOrgInfo.username}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+            <a href="{{instanceUrl + '/_ui/common/apex/debug/ApexCSIPage'}}" target="_blank" class="slds-button slds-button--neutral">Dev Console</a>
+            <a href="{{instanceUrl + '/apexpages/setup/listStaticResource.apexp'}}" target="_blank" class="slds-button slds-button--neutral">Static Resources</a>
+            <a href="{{logoutUrl}}" class="slds-button slds-button--destructive">Logout</a>
+        </div>
+    </div>
+</div>
+
+<div class="slds-container--center slds-container--large">
+    <form class="slds-form--inline" (ngSubmit)="createNpmResource()" style="margin-top: 20px; margin-bottom: 20px;">
+        <div class="slds-form-element">
+            <span class="slds-icon_container" title="description of icon when needed">
+                <svg aria-hidden="true" class="slds-icon slds-icon--x-small slds-icon-text-default">
+                    <use attr.xlink:href="{{sldsUrl}}/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                </svg>
+            </span>
+            <label class="slds-form-element__label" for="npmPackageName">NPM Package Name: </label>
+            <div class="slds-form-element__control">
+                <input id="npmPackageName" class="slds-input" type="text" ng2-auto-complete [(ngModel)]="npmPackageName" [source]="npmSearchUrl" (ngModelChange)="npmPackageNameSelected($event)" display-property-name="value" path-to-data="sections.packages" min-chars="2">
+            </div>
+        </div>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="npmPackageVersion">Version: </label>
+            <div class="slds-form-element__control">
+                <select id="npmPackageVersion" class="slds-select" [disabled]="!npmPackageName" [(ngModel)]="npmPackageVersion" style="min-width: 150px">
+                    <option *ngFor="let version of npmPackageVersions" [value]="version">{{version}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="slds-form-element">
+            <button class="slds-button slds-button--brand" type="submit" [disabled]="!npmPackageName || !npmPackageVersion">Install NPM Package</button>
+        </div>
+    </form>
+
+    <div>
+        <h3>Installed NPM Packages:</h3>
+
+        <ul class="slds-has-dividers--bottom-space">
+            <li class="slds-item" *ngFor="let forceNpm of forceNpmList">
+                <div class="slds-tile slds-media">
+                    <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon">
+                            <use attr.xlink:href="{{sldsUrl}}/assets/icons/doctype-sprite/svg/symbols.svg#zip"></use>
+                        </svg>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-truncate" title="{{forceNpm.name}}">{{forceNpm.name}} {{forceNpm.version}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
