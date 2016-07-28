@@ -6,11 +6,9 @@ scalaVersion := "2.11.8"
 
 incOptions := incOptions.value.withNameHashing(true)
 
-updateOptions := updateOptions.value.withCachedResolution(cachedResoluton = true)
+updateOptions := updateOptions.value.withCachedResolution(true)
 
 resolvers += Resolver.mavenLocal
-
-resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= Seq(
   ws,
@@ -41,8 +39,6 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "codelyzer" % "0.0.19",
 
   "org.webjars"     % "salesforce-lightning-design-system" % "2.0.2"
-
-  //"org.scalatestplus.play" %% "scalatestplus-play"   % "1.5.1"     % "test"
 )
 
 pipelineStages := Seq(digest, gzip)

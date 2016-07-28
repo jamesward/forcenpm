@@ -55,9 +55,38 @@
                     </div>
                     <div class="slds-media__body">
                         <p class="slds-truncate" title="{{forceNpm.name}}">{{forceNpm.name}} {{forceNpm.version}}</p>
+                        <div class="slds-tile__detail slds-text-body--small">
+                            <p class="slds-truncate"><a href="#" (click)="visualforceFileReferences(forceNpm)">Visualforce File References</a></p>
+                        </div>
                     </div>
                 </div>
             </li>
         </ul>
     </div>
+
+    <div class="slds-modal slds-modal--large" [class.slds-fade-in-open]="selectedForceNpm.name" aria-hidden="false" role="dialog">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <button class="slds-button slds-button--icon-inverse slds-modal__close" (click)="visualforceFileReferences({})">
+                    <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                        <use attr.xlink:href="{{sldsUrl}}/assets/icons/action-sprite/svg/symbols.svg#close"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading--medium">Visualforce File References</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium" style="min-height: 150px;">
+                <div [class.slds-spinner]="forceNpmFileList.length == 0 && selectedForceNpm.name" [class.slds-spinner--large]="forceNpmFileList.length == 0 && selectedForceNpm.name" aria-hidden="false" role="alert">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+                <ul>
+                    <li class="slds-item" *ngFor="let forceNpmFile of forceNpmFileList">
+                        <code>{!URLFOR($Resource.npm_{{selectedForceNpm.name}}, '{{forceNpmFile}}')}</code>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slds-backdrop" [class.slds-backdrop--open]="selectedForceNpm.name"></div>
 </div>

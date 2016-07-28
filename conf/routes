@@ -12,6 +12,7 @@ GET         /force/npm                     controllers.Application.forceNpmList
 POST        /force/npm                     controllers.Application.forceNpmCreate(name, version)
 GET         /npm/search                    controllers.Application.npmPackageSearch(keyword)
 GET         /npm/versions                  controllers.Application.npmPackageVersions(name)
+GET         /npm/files                     controllers.Application.npmPackageFiles(name, version)
 
 # OAuth
 GET         /_login_prod                   controllers.Application.oauthLoginProd()

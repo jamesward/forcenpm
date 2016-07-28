@@ -33,7 +33,19 @@ export class AppService {
     }
 
     npmPackageVersions(packageName) {
-        return this.http.get('/npm/versions?name=' + packageName)
+        let params = new URLSearchParams();
+        params.set('name', packageName);
+        let options = new RequestOptions({ search: params });
+        return this.http.get('/npm/versions', options)
+            .map(response => response.json());
+    }
+
+    forceNpmFileList(forceNpm) {
+        let params = new URLSearchParams();
+        params.set('name', forceNpm.name);
+        params.set('version', forceNpm.version);
+        let options = new RequestOptions({ search: params });
+        return this.http.get('/npm/files', options)
             .map(response => response.json());
     }
 }

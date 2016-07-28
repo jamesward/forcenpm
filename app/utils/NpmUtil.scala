@@ -12,7 +12,7 @@ import play.api.http.Status
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.libs.ws.WSClient
-import resource.ManagedResource
+import resource._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
@@ -96,6 +96,20 @@ class NpmUtil @Inject() (implicit ec: ExecutionContext, ws: WSClient) {
       zipOutputStream.finish()
 
       zipByteArrayOutputStream.toByteArray
+    }
+  }
+
+  def files(name: String, version: String): ManagedResource[Seq[String]] = {
+    val url = new URL(registryTgzUrl(name, version))
+
+    for {
+      inputStream <- managed(url.openConnection().getInputStream)
+      gzipInputStream <- managed(new GzipCompressorInputStream(inputStream))
+      tarArchiveInputStream <- managed(new TarArchiveInputStream(gzipInputStream))
+    } yield {
+      Stream.continually(tarArchiveInputStream.getNextTarEntry).takeWhile(_ != null).map { entry =>
+        entry.getName.stripPrefix("package/")
+      }
     }
   }
 

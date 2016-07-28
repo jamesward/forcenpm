@@ -31,6 +31,10 @@ export class AppComponent implements OnInit {
 
     private forceNpmList = [];
 
+    private forceNpmFileList = [];
+
+    private selectedForceNpm = {};
+
     constructor(private appService: AppService) { }
 
     fetchForceNpm() {
@@ -62,6 +66,14 @@ export class AppComponent implements OnInit {
         });
         this.npmPackageName = null;
         this.npmPackageVersion = null;
+    }
+
+    visualforceFileReferences(forceNpm) {
+        this.selectedForceNpm = forceNpm;
+        this.forceNpmFileList = [];
+        if (forceNpm.name != undefined) {
+            this.appService.forceNpmFileList(forceNpm).forEach(forceNpmFileList => this.forceNpmFileList = forceNpmFileList);
+        }
     }
 
 }

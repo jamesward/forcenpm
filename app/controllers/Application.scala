@@ -1,19 +1,13 @@
 package controllers
 
-import java.io.File
-import java.nio.file.{Files, Path}
 import javax.inject.Inject
 
-import models._
-import play.api.{Environment, Mode, Play}
+import controllers.Application._
 import play.api.data.validation.ValidationError
-import play.api.libs.Crypto
 import play.api.libs.json._
-import play.api.mvc.Results.EmptyContent
 import play.api.mvc._
+import play.api.{Environment, Mode}
 import utils.{AuthInfo, ForceUtil, NpmUtil, RequestError}
-import Application._
-import org.apache.commons.compress.utils.IOUtils
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -113,6 +107,12 @@ class Application @Inject() (force: ForceUtil, npm: NpmUtil, environment: Enviro
     } recover {
       case e: Exception =>
         InternalServerError
+    }
+  }
+
+  def npmPackageFiles(name: String, version: String) = Action {
+    npm.files(name, version).acquireAndGet { files =>
+      Ok(Json.toJson(files))
     }
   }
 
