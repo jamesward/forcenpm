@@ -2,32 +2,26 @@ package controllers
 
 import javax.inject.Inject
 
+import controllers.routes.{StaticWebJarAssets => AssetRoutes}
 import play.api.Configuration
 import play.api.mvc.Controller
-import org.webjars.RequireJS
 
 class StaticWebJarAssets @Inject() (webJarAssets: WebJarAssets, configuration: Configuration) extends Controller {
 
-  import java.util
+  def at(file: String) = Assets.at("/META-INF/resources/webjars", file)
+  def atNpm(file: String) = Assets.at("/META-INF/resources/webjars", file)
 
-  import com.fasterxml.jackson.databind.node.ObjectNode
+  lazy val maybeAssetsUrl = configuration.getString("assets.url")
 
-  // prepends a url if the assets.url config is set
-  def url(file: String): String = {
-    val baseUrl = routes.WebJarAssets.at(file).url
-    configuration.getString("assets.url").fold(baseUrl)(_ + baseUrl)
+  def getUrl(webJar: String, path: String) = {
+    val atUrl = AssetRoutes.at(webJarAssets.fullPath(webJar, path)).url
+    maybeAssetsUrl.fold(atUrl)(_ + atUrl)
   }
 
-  def urlFullPath(webJar: String, path: String): String = {
-    url(webJarAssets.fullPath(webJar, path))
+  def getUrlNpm(webJar: String, path: String) = {
+    val atUrl = AssetRoutes.atNpm(webJarAssets.fullPath(webJar, path)).url
+    maybeAssetsUrl.fold(atUrl)(_ + atUrl)
   }
 
-  def requireJsConfig: util.Collection[ObjectNode] = {
-    configuration.getString("assets.url").fold {
-      RequireJS.getSetupJson(url(""))
-    } { assetsUrl =>
-      RequireJS.getSetupJson(url(""), routes.WebJarAssets.at("").url)
-    }.values()
-  }
 
 }
