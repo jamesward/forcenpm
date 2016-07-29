@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
 
   "org.webjars.npm" % "ng2-auto-complete" % "0.4.1",
 
-  "org.webjars.npm" % "systemjs" % "0.19.31",
+  "org.webjars.npm" % "systemjs" % "0.19.35",
   "org.webjars.npm" % "core-js" % "2.4.1",
   "org.webjars.npm" % "reflect-metadata" % "0.1.3",
   "org.webjars.npm" % "rxjs" % "5.0.0-beta.10",

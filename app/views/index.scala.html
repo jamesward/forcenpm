@@ -13,7 +13,9 @@
         <script src="@staticWebJarAssets.getUrlNpm("core-js", "client/shim.min.js")"></script>
         <script src="@staticWebJarAssets.getUrlNpm("zone.js", "dist/zone.js")"></script>
         <script src="@staticWebJarAssets.getUrlNpm("reflect-metadata", "Reflect.js")"></script>
-        <script src="@staticWebJarAssets.getUrlNpm("systemjs", "dist/system.src.js")"></script>
+        @* todo: use CDN when the cache invalidates *@
+        @*<script src="@staticWebJarAssets.getUrlNpm("systemjs", "dist/system.src.js")"></script>*@
+        <script src="@routes.StaticWebJarAssets.atNpm(staticWebJarAssets.fullPath("systemjs", "dist/system.src.js")).url"></script>
 
         <script>
             var idUrl = '@authInfo.idUrl';
@@ -21,13 +23,20 @@
             var refreshToken = '@authInfo.refreshToken';
             var instanceUrl = '@authInfo.instanceUrl';
             var logoutUrl = '@routes.Application.login()';
-            var sldsUrl = '@npmWebJarUrl("salesforce-lightning-design-system")';
+            @* todo: SVG icons do not work cross-domain *@
+            @*var sldsUrl = '@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "").dropRight(1)';*@
+            var sldsUrl = '@routes.StaticWebJarAssets.at(staticWebJarAssets.fullPath("salesforce-lightning-design-system", "").dropRight(1)).url';
 
             (function(global) {
                 var map = {
                     'app':                                                '@routes.Assets.versioned("app").url',
                     'symbol-observable':                                  '@npmWebJarUrl("symbol-observable")',
-                    'rxjs':                                               '@npmWebJarUrl("rxjs")',
+                    'rxjs/Rx':                                            '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
+                    'rxjs/Subject':                                       '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
+                    'rxjs/observable/PromiseObservable':                  '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
+                    'rxjs/operator/toPromise':                            '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
+                    'rxjs/Observable':                                    '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
+                    'rxjs/add/operator/map':                              '@staticWebJarAssets.getUrlNpm("rxjs", "bundles/Rx.umd.js")',
                     'auto-complete':                                      '@npmWebJarUrl("ng2-auto-complete")',
                     '@@angular/core':                                     '@npmWebJarUrl("angular__core")',
                     '@@angular/common':                                   '@npmWebJarUrl("angular__common")',
@@ -40,7 +49,6 @@
                 var packages = {
                     'app':                                                { main: 'main.js', defaultExtension: 'js' },
                     'symbol-observable':                                  { main: 'index.js', defaultExtension: 'js' },
-                    'rxjs':                                               { defaultExtension: 'js' },
                     'auto-complete':                                      { main: 'dist/index.js', defaultExtension: 'js' }
                 };
 

@@ -23,5 +23,8 @@ class StaticWebJarAssets @Inject() (webJarAssets: WebJarAssets, configuration: C
     maybeAssetsUrl.fold(atUrl)(_ + atUrl)
   }
 
+  def fullPath(webJar: String, path: String) = {
+    webJarAssets.fullPath(webJar, path)
+  }
 
 }

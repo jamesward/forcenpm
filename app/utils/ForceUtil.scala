@@ -35,8 +35,8 @@ class ForceUtil @Inject() (wsClient: WSClient, configuration: Configuration) {
   val SALESFORCE_ENV = "salesforce-env"
 
   def loginUrl(env: String)(implicit request: RequestHeader): String = env match {
-    case ENV_PROD => "https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s".format(consumerKey, redirectUri)
-    case ENV_SANDBOX => "https://test.salesforce.com/services/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s".format(consumerKey, redirectUri)
+    case ENV_PROD => "https://login.salesforce.com/services/oauth2/authorize?response_type=code&prompt=login&client_id=%s&redirect_uri=%s".format(consumerKey, redirectUri)
+    case ENV_SANDBOX => "https://test.salesforce.com/services/oauth2/authorize?response_type=code&prompt=login&client_id=%s&redirect_uri=%s".format(consumerKey, redirectUri)
   }
 
   def tokenUrl(env: String): String = env match {
