@@ -58,7 +58,7 @@ class Application @Inject() (force: ForceUtil, npm: NpmUtil, environment: Enviro
   }
 
   def index() = AuthInfoAction { request =>
-    Ok(views.html.index(request.authInfo))
+    Ok(views.html.index(request.authInfo, environment.mode))
   }
 
   def login() = Action {

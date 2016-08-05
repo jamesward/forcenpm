@@ -82,7 +82,7 @@
                 </div>
                 <ul>
                     <li class="slds-item" *ngFor="let forceNpmFile of forceNpmFileList">
-                        <code>{!URLFOR($Resource.npm_{{selectedForceNpm.name}}, '{{forceNpmFile}}')}</code>
+                        <code>{!URLFOR($Resource.{{selectedForceNpm.resourceName}}, '{{forceNpmFile}}')}</code>
                     </li>
                 </ul>
             </div>

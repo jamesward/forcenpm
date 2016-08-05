@@ -43,7 +43,8 @@ export class AppComponent implements OnInit {
                 let descriptionParts = forceNpm['Description'].replace('NPM Package: ', '').split(' ');
                 let name = descriptionParts[0];
                 let version = descriptionParts[1];
-                return { name: name, version: version };
+                let resourceName = forceNpm['Name'];
+                return { name, version, resourceName };
             });
         });
     }

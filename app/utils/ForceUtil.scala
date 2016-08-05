@@ -119,7 +119,7 @@ class ForceUtil @Inject() (wsClient: WSClient, configuration: Configuration) {
   def createResource(authInfo: AuthInfo, name: String, version: String, bytes: Array[Byte]): Future[JsValue] = {
     val body = new String(Base64.encodeBase64(bytes))
     val description = s"NPM Package: $name $version"
-    val legalName = "npm_" + name.replaceAll("\\W", "_")
+    val legalName = "npm_" + name.replaceAll("\\W", "_") + "_" + version.replaceAll("\\W", "_")
     val json = Json.obj(
       "Name" -> legalName,
       "Body" -> body,

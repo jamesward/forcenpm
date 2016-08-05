@@ -1,4 +1,4 @@
-@(authInfo: utils.AuthInfo)(implicit staticWebJarAssets: StaticWebJarAssets)
+@(authInfo: utils.AuthInfo, mode: play.api.Mode.Mode)(implicit staticWebJarAssets: StaticWebJarAssets)
 
 @npmWebJarUrl(name: String) = @{ staticWebJarAssets.getUrlNpm(name, "").dropRight(1) }
 
@@ -23,6 +23,7 @@
             var refreshToken = '@authInfo.refreshToken';
             var instanceUrl = '@authInfo.instanceUrl';
             var logoutUrl = '@routes.Application.login()';
+            var mode = '@mode.toString()';
             @* todo: SVG icons do not work cross-domain *@
             @*var sldsUrl = '@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "").dropRight(1)';*@
             var sldsUrl = '@routes.StaticWebJarAssets.at(staticWebJarAssets.fullPath("salesforce-lightning-design-system", "").dropRight(1)).url';
