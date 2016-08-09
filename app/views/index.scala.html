@@ -10,12 +10,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "assets/styles/salesforce-lightning-design-system.min.css")"/>
 
+        <script src="@staticWebJarAssets.getUrlNpm("svg4everybody", "dist/svg4everybody.min.js")"></script>
+
         <script src="@staticWebJarAssets.getUrlNpm("core-js", "client/shim.min.js")"></script>
         <script src="@staticWebJarAssets.getUrlNpm("zone.js", "dist/zone.js")"></script>
         <script src="@staticWebJarAssets.getUrlNpm("reflect-metadata", "Reflect.js")"></script>
-        @* todo: use CDN when the cache invalidates *@
-        @*<script src="@staticWebJarAssets.getUrlNpm("systemjs", "dist/system.src.js")"></script>*@
-        <script src="@routes.StaticWebJarAssets.atNpm(staticWebJarAssets.fullPath("systemjs", "dist/system.src.js")).url"></script>
+        <script src="@staticWebJarAssets.getUrlNpm("systemjs", "dist/system.src.js")"></script>
 
         <script>
             var idUrl = '@authInfo.idUrl';
@@ -24,9 +24,6 @@
             var instanceUrl = '@authInfo.instanceUrl';
             var logoutUrl = '@routes.Application.login()';
             var mode = '@mode.toString()';
-            @* todo: SVG icons do not work cross-domain *@
-            @*var sldsUrl = '@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "").dropRight(1)';*@
-            var sldsUrl = '@routes.StaticWebJarAssets.at(staticWebJarAssets.fullPath("salesforce-lightning-design-system", "").dropRight(1)).url';
 
             (function(global) {
                 var map = {
@@ -84,6 +81,23 @@
                 };
 
                 System.config(config);
+
+                function loadSvg(url) {
+                    var ajax = new XMLHttpRequest();
+                    ajax.open('GET', url, true);
+                    ajax.send();
+                    ajax.onload = function(e) {
+                        var div = document.createElement('div');
+                        div.innerHTML = ajax.responseText;
+                        document.body.insertBefore(div, document.body.childNodes[0]);
+                        svg4everybody();
+                    };
+                }
+
+                loadSvg('@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "assets/icons/doctype-sprite/svg/symbols.svg")');
+                loadSvg('@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "assets/icons/utility-sprite/svg/symbols.svg")');
+                loadSvg('@staticWebJarAssets.getUrl("salesforce-lightning-design-system", "assets/icons/action-sprite/svg/symbols.svg")');
+
             })(this);
 
             System.import('app').catch(function(err){ console.error(err); });

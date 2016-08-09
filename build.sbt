@@ -35,6 +35,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "rxjs" % "5.0.0-beta.10",
   "org.webjars.npm" % "zone.js" % "0.6.12",
 
+  "org.webjars.npm" % "svg4everybody" % "2.1.0",
+
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
   "org.webjars.npm" % "codelyzer" % "0.0.19",
 

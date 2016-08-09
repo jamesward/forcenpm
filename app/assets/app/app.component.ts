@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
     private userOrgInfo: UserOrgInfo = new UserOrgInfo();
     private instanceUrl: string = window['instanceUrl'];
     private logoutUrl: string = window['logoutUrl'];
-    private sldsUrl: string = window['sldsUrl'];
     private npmSearchUrl: string = '/npm/search';
 
     private npmPackageName;
